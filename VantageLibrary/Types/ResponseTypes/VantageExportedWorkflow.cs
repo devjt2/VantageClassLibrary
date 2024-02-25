@@ -1,6 +1,9 @@
-﻿namespace VantageLibrary.Types;
+﻿using System.Text.Json.Serialization;
+
+namespace VantageLibrary.Types;
 
 public class VantageExportedWorkflow
 {
-    public string PathToExportedFile { get; set; }
+    [JsonConverter(typeof(Utilities.FileInfoConverter))]
+    public FileInfo PathToExportedFile { get; set; }
 }

@@ -1,1 +1,0 @@
-﻿### These types are used within the library only and should never be returned to the library consumer.

@@ -1,4 +1,4 @@
-﻿namespace VantageLibrary;
+﻿namespace VantageLibrary.Enums;
 
 public enum JobsFilterEnum
 {

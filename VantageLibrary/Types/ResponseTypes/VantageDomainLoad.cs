@@ -2,5 +2,5 @@
 
 public class VantageDomainLoad
 {
-    public long Load { get; set; }
+    public int Load { get; set; }
 }

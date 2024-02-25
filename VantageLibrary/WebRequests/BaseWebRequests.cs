@@ -11,11 +11,13 @@ using System.Threading.Tasks;
 using VantageLibrary.Types;
 using VantageLibrary.Utilities;
 
-namespace VantageLibrary {
+namespace VantageLibrary.WebRequests
+{
     public class BaseWebRequests : IDisposable
     {
         private readonly HttpClient _httpClient;
-        public BaseWebRequests(Uri baseAddress) {
+        public BaseWebRequests(Uri baseAddress)
+        {
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = baseAddress;
         }
@@ -43,10 +45,10 @@ namespace VantageLibrary {
         {
             try
             {
-                string jsonPayload = Serialization.Serialize<T>(data);
+                string jsonPayload = Serialization.Serialize(data);
 
                 HttpContent content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-                
+
                 using HttpResponseMessage response = _httpClient.PostAsync(uriAppend, content).Result;
 
                 if (response.IsSuccessStatusCode)
@@ -100,7 +102,7 @@ namespace VantageLibrary {
                 }
                 return false;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("Vantage Delete Request Failed: " + ex.Message);
             }
@@ -109,21 +111,22 @@ namespace VantageLibrary {
         public string VantageRestPut<T>(string uriAppend, T data)
         {
             string jsonPayload;
-            if(data == null)
+            if (data == null)
             {
                 throw new Exception("Input data cannot be null");
             }
             else
             {
-                jsonPayload = Serialization.Serialize<T>(data);
+                jsonPayload = Serialization.Serialize(data);
 
             }
-            
+
             HttpContent content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-            try {
+            try
+            {
                 using HttpResponseMessage response = _httpClient.PutAsync(uriAppend, content).Result;
-                if(response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                 {
                     return response.Content.ReadAsStringAsync().Result;
                 }
@@ -132,9 +135,10 @@ namespace VantageLibrary {
                     throw new Exception("Put Request to Vantage Failed");
                 }
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 throw new Exception("Put Request to Vantage Failed: " + ex.Message);
-            }   
+            }
         }
 
         /// <summary>
@@ -146,7 +150,7 @@ namespace VantageLibrary {
         /// <exception cref="Exception"></exception>
         public T VantageRestPut<T>(string uriAppend) where T : IConvertible
         {
-            System.Type typeName = typeof(T);
+            Type typeName = typeof(T);
             try
             {
                 using HttpResponseMessage response = _httpClient.PutAsync(uriAppend, null).Result;
@@ -156,7 +160,7 @@ namespace VantageLibrary {
                     {
                         return (T)(object)response.Content.ReadAsStringAsync().Result;
                     }
-                    else if(typeName == typeof(bool))
+                    else if (typeName == typeof(bool))
                     {
                         //In the case that vantage is emitting a 'true' or 'false' value it is wrapped in a Json containing one parameter followed by the boolean value.
                         //Converting that one Json Parameter into a generic key value pair for easy boolean value extraction.

@@ -35,10 +35,22 @@ static void Main(string[] args)
         Console.WriteLine(workflow.Name);
     }
 
+    // Submit a job to a workflow. First start by getting the expected job inputs.
+    VantageWorkflowJobInputs jobInputs = domainClient.Functions.GetWorkflowJobInputs(vantageWorkflowId);
+    // Next use the 'jobInputs' and modify it to for submission
+    jobInputs.JobName = "Test Client App Job"; // This parameter is required.
+
+    // Now we want to get the media where the name equals 'Original'. You may target any media as provided in the job inputs
+    VantageMedia mediaToChange = jobInputs.Medias.Where(x => x.Name.Equals("Original")).First();
+    mediaToChange.Files.Clear(); // clear out the sample item from the list.
+    mediaToChange.Files.Add(new FileInfo(FileToSubmitTextBox.Text));
+
+    // Submit the job
+    Guid jobIdentifier = domainClient.Functions.SubmitJob(vantageWorkflowId, jobInputs);
+
     // Always dispose of the client when done.
     domainClient.Dispose()
 }
-
 ````
 
 ### Collaboration

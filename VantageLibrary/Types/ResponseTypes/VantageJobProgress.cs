@@ -1,4 +1,4 @@
 ﻿namespace VantageLibrary.Types; 
-internal class VantageJobProgress {
-    public long JobProgress { get; set; }
+public class VantageJobProgress {
+    public int JobProgress { get; set; }
 }

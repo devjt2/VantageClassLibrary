@@ -1,1 +1,1 @@
-﻿### Response types from Vantage. These *can*, but may now always, be returned to the consuming application. In the case where something can be simplified it will be. For example we would just return a boolean instead of an object containging a bool value.
+﻿### Response types from Vantage. These *can*, but may not always, be returned to the consuming application. In the case where something can be simplified it will be. For example we would just return a boolean instead of an object containging a bool value.

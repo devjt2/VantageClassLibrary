@@ -7,18 +7,18 @@ public class VantageServiceMetric
     public class ServiceMetric
     {
         public bool AcceptingWork { get; set; }
-        public long ActiveSessionCount { get; set; }
-        public long AverageQueueLength { get; set; }
-        public long AverageQueueWaitInSeconds { get; set; }
-        public long CurrentResourceUsage { get; set; }
-        public long FailedLicenseCount { get; set; }
-        public long FailedSessionCount { get; set; }
-        public long LightspeedFallbackCount { get; set; }
-        public long QueuedSessionCount { get; set; }
-        public long SendQueueSize { get; set; }
-        public long ServiceUtilization { get; set; }
-        public long SuccessfulSessionCount { get; set; }
-        public long TargetResourceUsage { get; set; }
-        public long TotalSessionCount { get; set; }
+        public int ActiveSessionCount { get; set; }
+        public int AverageQueueLength { get; set; }
+        public int AverageQueueWaitInSeconds { get; set; }
+        public int CurrentResourceUsage { get; set; }
+        public int FailedLicenseCount { get; set; }
+        public int FailedSessionCount { get; set; }
+        public int LightspeedFallbackCount { get; set; }
+        public int QueuedSessionCount { get; set; }
+        public int SendQueueSize { get; set; }
+        public int ServiceUtilization { get; set; }
+        public int SuccessfulSessionCount { get; set; }
+        public int TargetResourceUsage { get; set; }
+        public int TotalSessionCount { get; set; }
     }
 }
