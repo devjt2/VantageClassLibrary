@@ -1,4 +1,4 @@
-﻿namespace VantageLibrary.Types;
+﻿namespace VantageLibrary.Types.InternalTypes;
 
 public class VantageWorkflowWrapper
 {

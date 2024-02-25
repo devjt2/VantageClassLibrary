@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 using VantageLibrary;
 using VantageLibrary.Types;
 using System.Diagnostics;
+using VantageLibrary.Types.InternalTypes;
+using VantageLibrary.Types.RequestTypes;
+using VantageLibrary.Types.ResponseTypes;
 
-namespace VantageLibrary {
+namespace VantageLibrary
+{
     public class VantageFunctions : IDisposable
     {
         private readonly BaseWebRequests _webRequests;
@@ -15,14 +19,14 @@ namespace VantageLibrary {
         public VantageFunctions(Uri baseAddress) {
             _webRequests = new BaseWebRequests(baseAddress);
         }
+        #region GET_Requests
         /// Starting with all of the GET requests.
 
         /// <summary>
         /// Gets a specific Binder for the domain.
         /// </summary>
-        /// <param name="client"></param>
         /// <param name="binderId"></param>
-        /// <returns></returns>
+        /// <returns>VantageBinder</returns>
         public VantageBinder GetBinder(Guid binderId)
         {
             VantageBinderWrapper vantageBinder = Utilities.Serialization.Deserialize<VantageBinderWrapper>(_webRequests.VantageRestGet("/Rest/Binder/" + binderId.ToString()));
@@ -31,7 +35,6 @@ namespace VantageLibrary {
         /// <summary>
         /// Gets the content for a specific Binder.
         /// </summary>
-        /// <param name="client"></param>
         /// <param name="binderId"></param>
         /// <returns></returns>
         public VantageBinder GetBinderContent(Guid binderId)
@@ -42,7 +45,6 @@ namespace VantageLibrary {
         /// <summary>
         /// Gets all of the Catalog(s) for the domain.
         /// </summary>
-        /// <param name="client"></param>
         /// <returns></returns>
         public List<VantageCatalog> GetVantageCatalogs()
         {
@@ -52,7 +54,6 @@ namespace VantageLibrary {
         /// <summary>
         /// Gets a specific catalog for the domain.
         /// </summary>
-        /// <param name="client"></param>
         /// <param name="catalogId"></param>
         /// <returns></returns>
         public VantageCatalog GetCatalog(Guid catalogId)
@@ -69,7 +70,6 @@ namespace VantageLibrary {
         /// <summary>
         /// Return all outputs (Media Nicknames, Attachments and/or Labels) associated with a specific content.
         /// </summary>
-        /// <param name="client"></param>
         /// <param name="contentId"></param>
         /// <returns></returns>
         public VantageContentEntries GetContentEntries(Guid contentId)
@@ -80,7 +80,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Gets all categories from this domain.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <returns></returns>
         public List<VantageCategory> GetCategories()
         {
@@ -91,7 +91,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Returns a long value of the domain load across all machines.
         /// </summary>
-        /// <param name="criteria">I think we can declare 'CPU' or 'GPU' unsure</param>
+        /// <param name="criteria">I think we can declare 'CPU' or 'GPU' unsure? Defaults to CPU.</param>
         /// <returns>long</returns>
         public long GetDomainLoad(string criteria = "CPU")
         {
@@ -116,7 +116,6 @@ namespace VantageLibrary {
         /// <summary>
         /// Gets the vantage domain version.
         /// </summary>
-        /// <param name="client"></param>
         /// <returns>string</returns>
         public string DomainVersion()
         {
@@ -126,7 +125,6 @@ namespace VantageLibrary {
         /// <summary>
         /// Gets a specific Folder for the domain.
         /// </summary>
-        /// <param name="client"></param>
         /// <param name="folderId"></param>
         /// <returns>VantageFolder</returns>
         public VantageFolder GetFolder(Guid folderId)
@@ -138,7 +136,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Gets all vantage folders for a given Catalog or Folder
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="folderId">This can be a catalog or folder id</param>
         /// <returns>A List&lt;VantageFolder&gt; Object</returns>
         public List<VantageFolder> GetFolders(Guid folderId)
@@ -149,7 +147,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Gets a Binder in a specific Catalog or Folder by Binder Name.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="folderId">This can be a folder or catalog id</param>
         /// <param name="binderName"></param>
         /// <returns></returns>
@@ -161,7 +159,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Gets all of the Binder(s) for a given Catalog or Folder.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="folderId">This can be a folder or catalog id</param>
         /// <param name="binderName"></param>
         /// <returns></returns>
@@ -173,7 +171,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Returns information about the job with the provided identifier.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="jobId"></param>
         /// <returns>VantageJob</returns>
         public VantageJob GetJob(Guid jobId)
@@ -184,7 +182,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Return all actions associated with a specific job.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="jobId"></param>
         /// <returns>List&lt;VantageJobAction&gt;</returns>
         public List<VantageJobAction> GetJobActions(Guid jobId)
@@ -195,7 +193,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Returns the relevant error message associated with a job which has failed.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="jobId"></param>
         /// <returns>string</returns>
         public string GetJobErrorMessage(Guid jobId)
@@ -206,7 +204,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Returns a collection of jobs which were created as a result of being forwarded from the specified job.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="jobId"></param>
         /// <returns>List&lt;VantageJob&gt;</returns>
         public List<VantageJob> GetJobForwards(Guid jobId)
@@ -217,7 +215,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Return specific metrics (eg: total  run time, total queue time) about a specified job.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="jobId"></param>
         /// <returns>VantageJobMetric</returns>
         public VantageJobMetric GetJobMetrics(Guid jobId)
@@ -228,7 +226,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Return all outputs (Media Nicknames, Attachments and/or Labels) associated with a specific job.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="jobId"></param>
         /// <returns>VantageJobOutput</returns>
         public VantageJobOutput GetJobOutputs(Guid jobId)
@@ -239,7 +237,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Returns the progress (percent complete) for the specified job.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="jobId"></param>
         /// <returns>long</returns>
         public long GetJobProgress(Guid jobId)
@@ -251,7 +249,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Return all machines in the domain.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <returns>List&lt;VantageMachine&gt;</returns>
         public List<VantageMachine> GetMachines()
         {
@@ -261,7 +259,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Return all machines in the domain.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <returns>List&lt;VantageService&gt;</returns>
         public List<VantageService> GetServices()
         {
@@ -271,7 +269,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Gets the metric information associated with the specified service.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="serviceId"></param>
         /// <returns>VantageServiceMetric.ServiceMetric</returns>
         public VantageServiceMetric.ServiceMetric GetServiceMetric(Guid serviceId)
@@ -282,7 +280,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Returns information about services hosting actions of the specified type. 'actionType' may be: Capture, Tape, Subclip, Watch, Workorder, Camera, Catch, Dublist or Asset .
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="actionType"></param>
         /// <returns>List&lt;VantageService&gt;</returns>
         public List<VantageService> GetServicesLookupHosting(ActionTypes actionType)
@@ -293,7 +291,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Gets all online services in the domain which reside on the specified machine.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="machineId"></param>
         /// <returns>List&lt;VantageService&gt;</returns>
         public List<VantageService> GetServicesByMachine(Guid machineId)
@@ -305,7 +303,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Returns information about Vantage Managed Stores. An optional qualifier which indicates whether to include offline Stores is avaialble as well.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <returns>List&lt;VantageStore&gt;</VantageStore></returns>
         public List<VantageStore> GetStores()
         {
@@ -315,7 +313,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Return information about the specified Vantage Managed Store.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="vantageStoreId"></param>
         /// <returns>VantageStore</returns>
         public VantageStore GetStore(Guid vantageStoreId)
@@ -327,7 +325,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Return information about the specified Vantage Managed Store including whether or not the Vantage Managed Store is currently being utilized.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="storeId"></param>
         /// <returns>Boolean</returns>
         public bool GetStoreInUse(Guid storeId)
@@ -338,7 +336,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Gets all of the vantage workflows for this domain.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <returns></returns>
         public List<VantageWorkflow> GetWorkflows()
         {
@@ -348,7 +346,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Gets the workflow with the specified identifier from this domain.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="vantageWorkflowId"></param>
         /// <returns></returns>
         public VantageWorkflow GetWorkflow(Guid vantageWorkflowId)
@@ -359,7 +357,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Return all jobs for a specified workflow which match the specified filter criteria.
         /// The valid values for the filter query parameter are: 'All', 'Active', 'Failed', 'Paused' or 'Complete'
-        /// <param name="client"></param>
+        /// 
         /// <param name="vantageWorkflowId"></param>
         /// <returns></returns>
         public VantageWorkflowJobInputs GetWorkflowJobInputs(Guid vantageWorkflowId)
@@ -371,7 +369,7 @@ namespace VantageLibrary {
         /// <summary>
         /// Obtain a compressed representation of the specified workflow.
         /// </summary>
-        /// <param name="client"></param>
+        /// 
         /// <param name="vantageWorkflowId"></param>
         /// <returns></returns>
         public string GetWorkflowExport(Guid vantageWorkflowId)
@@ -379,13 +377,12 @@ namespace VantageLibrary {
             VantageWorkflowExport workflow = Utilities.Serialization.Deserialize<VantageWorkflowExport>(_webRequests.VantageRestGet("/Rest/Workflows/" + vantageWorkflowId));
             return workflow.CompressedWorkflow;
         }
+        #endregion
 
-
-        // POST Requests
-
+        #region POST_Requests
         public Guid SubmitJob(Guid vantageWorkflowId, VantageJobInput job)
         {
-            string vantageJobResponse = String.Empty;
+            string vantageJobResponse = System.String.Empty;
             try
             {
                 vantageJobResponse = _webRequests.VantageRestPostAsync<VantageJobInput>("/Rest/Workflows/" + vantageWorkflowId + "/Submit", job);//.Result;
@@ -397,7 +394,143 @@ namespace VantageLibrary {
             WorkflowSubmitResponse vantageJob = Utilities.Serialization.Deserialize<WorkflowSubmitResponse>(vantageJobResponse);
             return vantageJob.JobIdentifier;
         }
+        /// <summary>
+        /// Create a new XML representation of a workflow at the specified path.
+        /// </summary>
+        /// <param name="export">This is the data object with the job request and should include the workflow to export as well as a path where to export it.</param>
+        /// <returns>FileInfo</returns>
+        /// <exception cref="Exception"></exception>
+        public FileInfo ExportWorkflow(VantageWorkflowExport export)
+        {
+            string exportedWorkflow;
+            try
+            {
+                exportedWorkflow = _webRequests.VantageRestPostAsync<VantageWorkflowExport>("/Rest/Workflows/ExportToPath", export);
+            }
 
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong.");
+            }
+            VantageExportedWorkflow exportedWorkflowObj = Utilities.Serialization.Deserialize<VantageExportedWorkflow>(exportedWorkflow);
+            return new FileInfo(exportedWorkflowObj.PathToExportedFile);
+        }
+
+        /// <summary>
+        /// Clean up (remove from Vantage) all folders which are marked as Transient and are empty.
+        /// </summary>
+        /// <returns>bool</returns>
+        public bool CleanupCatalogs()
+        {
+            bool cleanup = _webRequests.VantageRestPostAsync("/Rest/Catalogs/Cleanup");
+            return cleanup;
+        }
+
+        //Url: http://10.3.3.238:8676/Rest/Machines/{ID}/Preshutdown 
+        /// <summary>
+        /// Instruct all services on the specified machine to begin the preshutdown state.
+        /// </summary>
+        /// <param name="vantageMachineId"></param>
+        /// <returns>bool</returns>
+        public bool MachinePreShutdown(Guid vantageMachineId)
+        {
+            bool preShutdown = _webRequests.VantageRestPostAsync("/Rest/Machines/" + vantageMachineId + "/Preshutdown");
+            return preShutdown;
+        }
+        /// <summary>
+        /// Request that the specified service enter the preshutdown state.
+        /// </summary>
+        /// <param name="vantageServiceId"></param>
+        /// <returns>bool</returns>
+        public bool ServicePreShutdown(Guid vantageServiceId)
+        {
+            bool preShutdown = _webRequests.VantageRestPostAsync("/Rest/Services/" + vantageServiceId + "/Preshutdown");
+            return preShutdown;
+        }
+        #endregion
+
+        #region DELETE_Requests
+        /// <summary>
+        /// Removes a completed job with the specified identifier.
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        public bool RemoveJob(Guid jobId)
+        {
+            //TODO: do this
+            bool deleted = _webRequests.VantageRestDelete("/Rest/Jobs/" + jobId);
+
+            return deleted;
+        }
+        #endregion
+
+        #region PUT_Requests
+
+        /// <summary>
+        /// Create a category with the specified name.
+        /// </summary>
+        /// <param name="categoryName"></param>
+        /// <returns></returns>
+        public VantageCategory CreateCategory(string categoryName)
+        {
+            string categoryCreationResponse = _webRequests.VantageRestPut<string>("/Rest/Category/" + categoryName + "/Create");
+            VantageCategoryWrapper resultCategoryWrapper = Utilities.Serialization.Deserialize<VantageCategoryWrapper>(categoryCreationResponse);
+            return resultCategoryWrapper.Category;
+        }
+        //VantageRestartJobSuccessful  http://10.3.3.238:8676/Rest/Jobs/{ID}/Restart
+        /// <summary>
+        /// Restarts a job which has previously been stopped. Only a job that is in the Stopped By User state may be restarted.
+        /// </summary>
+        /// <param name="jobId">Job ID of the job that you want to restart.</param>
+        /// <returns>bool</returns>
+        public bool RestartWorkflowJob(Guid jobId)
+        {
+            return _webRequests.VantageRestPut<bool>("/Rest/Jobs/" + jobId + "/Restart");
+        }
+        /// <summary>
+        /// Stops the job identified by the provided identifier.
+        /// </summary>
+        /// <param name="jobId">Job ID of the job that you want to stop.</param>
+        /// <returns>bool</returns>
+        public bool StopWorkflowJob(Guid jobId)
+        {
+            return _webRequests.VantageRestPut<bool>("/Rest/Jobs/" + jobId + "/Stop");
+        }
+
+        /// <summary>
+        /// Activate the specified workflow.
+        /// </summary>
+        /// <param name="workflowId"></param>
+        /// <returns></returns>
+        public bool ActivateWorkflow(Guid workflowId)
+        {
+            return _webRequests.VantageRestPut<bool>("/Rest/Workflows/" + workflowId + "/Activate");
+        }
+        /// <summary>
+        /// Deactivate the specified workflow.
+        /// </summary>
+        /// <param name="workflowId"></param>
+        /// <returns></returns>
+        public bool DeactivateWorkflow(Guid workflowId)
+        {
+            return _webRequests.VantageRestPut<bool>("/Rest/Workflows/" + workflowId + "/Deactivate");
+        }
+        /// <summary>
+        /// Renames the specified workflow to a new name.
+        /// </summary>
+        /// <param name="workflowId"></param>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool RenameWorkflow(Guid workflowId, NewWorkflowName obj)
+        {
+            string renameSuccess = _webRequests.VantageRestPut<NewWorkflowName>("/Rest/Workflows/" + workflowId + "/Rename", obj);
+            VantageWorkflowRenameSuccess success = Utilities.Serialization.Deserialize<VantageWorkflowRenameSuccess>(renameSuccess);
+            return success.Success;
+        }
+        #endregion
+        /// <summary>
+        /// Disposes the webrequests.
+        /// </summary>
         public void Dispose()
         {
             _webRequests.Dispose();

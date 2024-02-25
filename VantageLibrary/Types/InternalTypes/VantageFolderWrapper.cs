@@ -1,4 +1,4 @@
-﻿namespace VantageLibrary.Types;
+﻿namespace VantageLibrary.Types.InternalTypes;
 
 internal class VantageFolderWrapper
 {

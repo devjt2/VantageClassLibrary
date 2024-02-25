@@ -1,4 +1,6 @@
-﻿namespace VantageLibrary.Types;
+﻿using VantageLibrary.Types.InternalTypes;
+
+namespace VantageLibrary.Types;
 
 public partial class VantageStoreInUse : VantageStoreWrapper
 {
