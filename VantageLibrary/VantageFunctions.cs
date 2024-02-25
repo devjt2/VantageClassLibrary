@@ -367,14 +367,13 @@ namespace VantageLibrary
         }
 
         /// <summary>
-        /// Obtain a compressed representation of the specified workflow.
+        /// Obtain a compressed representation of the specified workflow. Use caution with this method as it will return a string of many megabytes depending on size of the authored workflow.
         /// </summary>
-        /// 
         /// <param name="vantageWorkflowId"></param>
         /// <returns></returns>
-        public string GetWorkflowExport(Guid vantageWorkflowId)
+        public string GetCompressedWorkflow(Guid vantageWorkflowId)
         {
-            VantageWorkflowExport workflow = Utilities.Serialization.Deserialize<VantageWorkflowExport>(_webRequests.VantageRestGet("/Rest/Workflows/" + vantageWorkflowId));
+            VantageCompressedWorkflow workflow = Utilities.Serialization.Deserialize<VantageCompressedWorkflow>(_webRequests.VantageRestGet("/Rest/Workflows/" + vantageWorkflowId + "/Export"));
             return workflow.CompressedWorkflow;
         }
         #endregion
@@ -400,12 +399,12 @@ namespace VantageLibrary
         /// <param name="export">This is the data object with the job request and should include the workflow to export as well as a path where to export it.</param>
         /// <returns>FileInfo</returns>
         /// <exception cref="Exception"></exception>
-        public FileInfo ExportWorkflow(VantageWorkflowExport export)
+        public FileInfo ExportWorkflow(VantageExportWorkflow export)
         {
             string exportedWorkflow;
             try
             {
-                exportedWorkflow = _webRequests.VantageRestPostAsync<VantageWorkflowExport>("/Rest/Workflows/ExportToPath", export);
+                exportedWorkflow = _webRequests.VantageRestPostAsync<VantageExportWorkflow>("/Rest/Workflows/ExportToPath", export);
             }
 
             catch (Exception ex)
@@ -520,14 +519,53 @@ namespace VantageLibrary
         /// </summary>
         /// <param name="workflowId"></param>
         /// <param name="obj"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public bool RenameWorkflow(Guid workflowId, NewWorkflowName obj)
         {
             string renameSuccess = _webRequests.VantageRestPut<NewWorkflowName>("/Rest/Workflows/" + workflowId + "/Rename", obj);
             VantageWorkflowRenameSuccess success = Utilities.Serialization.Deserialize<VantageWorkflowRenameSuccess>(renameSuccess);
             return success.Success;
         }
+        /// <summary>
+        /// Import a compressed workflow which had been previously exported from a Domain.
+        /// </summary>
+        /// <param name="compressedWorkflowData">The compressed workflow data as string.</param>
+        /// <returns>Guid</returns>
+        public Guid ImportCompressedWorkflow(string compressedWorkflowData)
+        {
+            ImportCompressedWorkflow compressedWf = new ImportCompressedWorkflow { 
+                CompressedWorkflow = compressedWorkflowData
+            };
+            string wfImportResponse = _webRequests.VantageRestPut<ImportCompressedWorkflow>("/Rest/Workflows/Import", compressedWf);
+            VantageWorkflowIdResponse workflowId = Utilities.Serialization.Deserialize<VantageWorkflowIdResponse>(wfImportResponse);
+            return workflowId.WorkflowIdentifier;
+        }
+        /// <summary>
+        /// Import a workflow specified by a file path.
+        /// </summary>
+        /// <param name="importWorkflowFromFileObj">Object of type ImportWorkflowFromFile</param>
+        /// <returns>Guid</returns>
+        public Guid ImportWorkflowFromPath(ImportWorkflowFromFile importWorkflowFromFileObj)
+        {
+            string wfImportResponse = _webRequests.VantageRestPut<ImportWorkflowFromFile>("/Rest/Workflows/ImportFromPath", importWorkflowFromFileObj);
+            VantageWorkflowIdResponse workflowId = Utilities.Serialization.Deserialize<VantageWorkflowIdResponse>(wfImportResponse);
+            return workflowId.WorkflowIdentifier;
+        }
+
+        /// <summary>
+        /// Synchronizes a workflow with a new definition from a specified file path.
+        /// </summary>
+        /// <param name="synchronizeWorkflowFromFileObj"></param>
+        /// <returns>Guid</returns>
+        public Guid SynchronizeWorkflowFromFile(SynchronizeWorkflowFromFile synchronizeWorkflowFromFileObj)
+        {
+            string wfUpdateResponse = _webRequests.VantageRestPut<SynchronizeWorkflowFromFile>("/Rest/Workflows/Synchronize", synchronizeWorkflowFromFileObj);
+            VantageWorkflowIdResponse workflowId = Utilities.Serialization.Deserialize<VantageWorkflowIdResponse>(wfUpdateResponse);
+            return workflowId.WorkflowIdentifier;
+        }
+
         #endregion
+
         /// <summary>
         /// Disposes the webrequests.
         /// </summary>

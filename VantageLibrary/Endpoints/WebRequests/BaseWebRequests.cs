@@ -10,7 +10,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using VantageLibrary.Types;
 using VantageLibrary.Utilities;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VantageLibrary {
     public class BaseWebRequests : IDisposable
@@ -29,11 +28,6 @@ namespace VantageLibrary {
             return response.Content.ReadAsStringAsync().Result;
         }
 
-        //PUT
-        public void VantageRestPut()
-        {
-
-        }
         // POST
 
         /// <summary>
@@ -49,10 +43,7 @@ namespace VantageLibrary {
         {
             try
             {
-
                 string jsonPayload = Serialization.Serialize<T>(data);
-
-                
 
                 HttpContent content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
                 
@@ -64,7 +55,7 @@ namespace VantageLibrary {
                 }
                 else
                 {
-                    throw new Exception("Vantage Job Submit Failed");
+                    throw new Exception("Vantage Post Request Failed.");
                 }
             }
             catch (Exception ex)
@@ -73,7 +64,7 @@ namespace VantageLibrary {
             }
         }
         /// <summary>
-        /// This is used to send a null payload and expect no string response from the server.
+        /// This is used to send a no payload and expects no string response from the server.
         /// </summary>
         /// <param name="uriAppend"></param>
         /// <returns>bool</returns>
@@ -111,7 +102,7 @@ namespace VantageLibrary {
             }
             catch(Exception ex)
             {
-                throw new Exception("Vantage Job Removal Failed: " + ex.Message);
+                throw new Exception("Vantage Delete Request Failed: " + ex.Message);
             }
         }
 
@@ -146,29 +137,8 @@ namespace VantageLibrary {
             }   
         }
 
-        //public bool VantageRestPut(string uriAppend)
-        //{
-        //    try
-        //    {
-        //        using HttpResponseMessage response = _httpClient.PutAsync(uriAppend, null).Result;
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            throw new Exception("Put Request to Vantage Failed");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception("Put Request to Vantage Failed: " + ex.Message);
-        //    }
-        //}
-
-
         /// <summary>
-        /// This method receives a request to PUT data of type T. For which the return will be of type T. This only supports 'string' and 'bool' input types.
+        /// This method receives a request to PUT data of type T. For which the return will be of type T. This only supports 'string' or 'bool' input types.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="uriAppend"></param>
