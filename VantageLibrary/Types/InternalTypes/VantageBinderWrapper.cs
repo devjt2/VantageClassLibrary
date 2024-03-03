@@ -1,5 +1,5 @@
 ﻿namespace VantageLibrary.Types.InternalTypes;
-internal class VantageBinderWrapper
+public class VantageBinderWrapper
 {
     public VantageBinder Binder { get; set; }
 }

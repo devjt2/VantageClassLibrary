@@ -4,6 +4,6 @@ public class VantageCategoryCreation {
     public class Category {
         public string Identifier { get; set; }
         public string Name { get; set; }
-        public List<VantageWorkflow> Workflows { get; set; }
+        public List<VantageCategoryWorkflow> Workflows { get; set; }
     }
 }

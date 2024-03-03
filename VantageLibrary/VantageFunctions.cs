@@ -395,9 +395,15 @@ namespace VantageLibrary
         #endregion
 
         #region POST_Requests
+        /// <summary>
+        /// Submits a job into a Vantage workflow.
+        /// </summary>
+        /// <param name="vantageWorkflowId"></param>
+        /// <param name="job"></param>
+        /// <returns>Guid ID of the started job.</returns>
         public Guid SubmitJob(Guid vantageWorkflowId, VantageWorkflowJobInputs job)
         {
-            string vantageJobResponse = System.String.Empty;
+            string vantageJobResponse = String.Empty;
             try
             {
                 vantageJobResponse = _webRequests.VantageRestPostAsync<VantageWorkflowJobInputs>("/Rest/Workflows/" + vantageWorkflowId + "/Submit", job);;
@@ -409,6 +415,7 @@ namespace VantageLibrary
             WorkflowSubmitResponse vantageJob = Utilities.Serialization.Deserialize<WorkflowSubmitResponse>(vantageJobResponse);
             return vantageJob.JobIdentifier;
         }
+
         /// <summary>
         /// Create a new XML representation of a workflow at the specified path.
         /// </summary>
@@ -441,9 +448,9 @@ namespace VantageLibrary
             return cleanup;
         }
 
-        //Url: http://10.3.3.238:8676/Rest/Machines/{ID}/Preshutdown 
         /// <summary>
         /// Instruct all services on the specified machine to begin the preshutdown state.
+        /// Url: http://10.3.3.238:8676/Rest/Machines/{ID}/Preshutdown
         /// </summary>
         /// <param name="vantageMachineId"></param>
         /// <returns>bool</returns>
@@ -452,6 +459,7 @@ namespace VantageLibrary
             bool preShutdown = _webRequests.VantageRestPostAsync("/Rest/Machines/" + vantageMachineId + "/Preshutdown");
             return preShutdown;
         }
+
         /// <summary>
         /// Request that the specified service enter the preshutdown state.
         /// </summary>

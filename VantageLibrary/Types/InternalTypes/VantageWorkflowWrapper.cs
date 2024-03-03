@@ -1,4 +1,5 @@
-﻿namespace VantageLibrary.Types.InternalTypes;
+﻿using VantageLibrary.Types.ResponseTypes;
+namespace VantageLibrary.Types.InternalTypes;
 
 public class VantageWorkflowWrapper
 {
