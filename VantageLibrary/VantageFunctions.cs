@@ -202,7 +202,7 @@ namespace VantageLibrary
         /// <returns>string</returns>
         public string GetJobErrorMessage(Guid jobId)
         {
-            VantageJobErrorMessage vantageJobErrorMessage = Utilities.Serialization.Deserialize<VantageJobErrorMessage>(_webRequests.VantageRestGet("/Rest/Jobs/" + jobId));
+            VantageJobErrorMessage vantageJobErrorMessage = Utilities.Serialization.Deserialize<VantageJobErrorMessage>(_webRequests.VantageRestGet("/Rest/Jobs/" + jobId + "/ErrorMessage"));
             return vantageJobErrorMessage.JobErrorMessage;
         }
 
@@ -367,7 +367,7 @@ namespace VantageLibrary
         /// 
         public List<VantageJob> GetWorkflowJobs(Guid workflowId, JobsFilterEnum? jobsFilter = JobsFilterEnum.All)
         {
-            VantageJobs vantageJobs = Utilities.Serialization.Deserialize<VantageJobs>(_webRequests.VantageRestGet("/Rest/Workflows/" + workflowId + "?filter=" + jobsFilter.ToString()));
+            VantageJobs vantageJobs = Utilities.Serialization.Deserialize<VantageJobs>(_webRequests.VantageRestGet("/Rest/Workflows/" + workflowId + "/Jobs?filter=" + jobsFilter.ToString()));
             return vantageJobs.Jobs;
         }
 

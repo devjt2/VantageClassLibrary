@@ -6,9 +6,9 @@ public enum JobStateEnum
 {
     [JsonPropertyName("In Process")]
     In_Process = 0,
-    Failed = 1,
-    Complete = 2,
-    Waiting = 3,
+    Failed = 4,
+    Complete = 5,
+    Waiting = 6,
     [JsonPropertyName("Stopped by User")]
     Stopped_by_User = 7,
     [JsonPropertyName("Waiting to Retry")]
